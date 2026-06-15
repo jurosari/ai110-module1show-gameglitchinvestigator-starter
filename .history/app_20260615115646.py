@@ -134,16 +134,12 @@ with col3:
 if new_game:
     """
     It seems to work but the code is not resetting the history list.
-    st.session_state.history.clear(); It works but when there's no attempt left, it doesnt let me to proceed with the game regardless of the erased list
-    and attempts
-
-    I could reset the status to playing once it resets, BUT VS AI IS TELLING ME THAT THIS IS A BAND-AID SOLUTION (Telling me that I should refactor)
+    st.session_state.history.clear() 
 
     """
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(1, 100)
-    st.session_state.history.clear() #Added this line to clear the history list when starting a new game, this wasn't here before
-    st.session_state.status = "playing" #Added this line to reset the game status to "playing" when starting a new game, this wasn't here before
+    st.session_state.history.clear()
     st.success("New game started.")
     st.rerun()
 
