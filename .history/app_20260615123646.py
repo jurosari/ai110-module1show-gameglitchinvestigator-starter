@@ -8,20 +8,15 @@ def get_range_for_difficulty(difficulty: str):
     st.seession_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
     st.session_state.history.clear()
-
-    Added some lines before the return statement, it respects the range however it keeps changing per try within the game (FIX NOW)
     """
     
     if difficulty == "Easy": 
-        st.session_state.secret = random.randint(1, 20) # We need to reset it according to the difficulty
-        return 1, 20
+        return 1, 100
     if difficulty == "Normal":
-        st.session_state.secret = random.randint(1, 100) # We need to reset it according to the difficulty
         return 1, 100
     if difficulty == "Hard":
-        st.session_state.secret = random.randint(1, 50) # We need to reset it according to the difficulty
         return 1, 50
-    #return 1, 100 # Commenting it to see what happens
+    return 1, 100
 
 
 def parse_guess(raw: str):

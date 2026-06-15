@@ -8,20 +8,16 @@ def get_range_for_difficulty(difficulty: str):
     st.seession_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
     st.session_state.history.clear()
-
-    Added some lines before the return statement, it respects the range however it keeps changing per try within the game (FIX NOW)
     """
-    
+    st.session_state.history.clear()
+    st.seession_state.attempts = 0
     if difficulty == "Easy": 
-        st.session_state.secret = random.randint(1, 20) # We need to reset it according to the difficulty
-        return 1, 20
+        st.session_state.secret = random.randint(1, 20)
     if difficulty == "Normal":
-        st.session_state.secret = random.randint(1, 100) # We need to reset it according to the difficulty
-        return 1, 100
+        st.session_state.secret = random.randint(1, 100)
     if difficulty == "Hard":
-        st.session_state.secret = random.randint(1, 50) # We need to reset it according to the difficulty
-        return 1, 50
-    #return 1, 100 # Commenting it to see what happens
+        st.session_state.secret = random.randint(1, 50)
+    st.session_state.secret = random.randint(1, 100)
 
 
 def parse_guess(raw: str):
@@ -148,15 +144,13 @@ if new_game:
     """
     It seems to work but the code is not resetting the history list.
     st.session_state.history.clear(); It works but when there's no attempt left, it doesnt let me to proceed with the game regardless of the erased list
-    and attempts (Linee 156)
+    and attempts
 
     I could reset the status to playing once it resets, BUT VS AI IS TELLING ME THAT THIS IS A BAND-AID SOLUTION (Telling me that I should refactor)
-    (Line 157)
 
-    For the range when the game resets, my version of the default difficulty is normal (Line 155)
     """
     st.session_state.attempts = 0
-    get_range_for_difficulty("Normal") #added
+    st.session_state.secret = random.randint(1, 100) # We need to reset it according to the difficulty
     st.session_state.history.clear() #Added this line to clear the history list when starting a new game, this wasn't here before
     st.session_state.status = "playing" #Added this line to reset the game status to "playing" when starting a new game, this wasn't here before
     st.success("New game started.")

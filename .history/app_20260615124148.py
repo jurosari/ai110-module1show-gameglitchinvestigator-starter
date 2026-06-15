@@ -8,8 +8,6 @@ def get_range_for_difficulty(difficulty: str):
     st.seession_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
     st.session_state.history.clear()
-
-    Added some lines before the return statement, it respects the range however it keeps changing per try within the game (FIX NOW)
     """
     
     if difficulty == "Easy": 
