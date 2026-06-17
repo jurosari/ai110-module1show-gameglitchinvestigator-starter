@@ -1,34 +1,14 @@
 import random
 import streamlit as st
 
-
 def get_range_for_difficulty(difficulty: str):
-    """"
-    I belive the function is good, but feels incomplete.
-    Everytime you change the difficulty the game should reset so it can respect the new range and attempt limit
-    st.seession_state.attempts = 0
-    st.session_state.secret = random.randint(low, high)
-    st.session_state.history.clear()
-
-    Added some lines before the return statement, it respects the range however it keeps changing per try within the game
-    """
-    
-    
-    if difficulty == "Easy": 
-        
-
-        
+    if difficulty == "Easy":
         return 1, 20
-        
-    
     if difficulty == "Normal":
-        
         return 1, 100
-    
     if difficulty == "Hard":
-        
         return 1, 50
-    return 1, 100 # Commenting it to see what happens
+    return 1, 100
 
 
 def parse_guess(raw: str):
@@ -106,7 +86,6 @@ attempt_limit = attempt_limit_map[difficulty]
 
 low, high = get_range_for_difficulty(difficulty)
 
-
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
@@ -124,11 +103,6 @@ if "status" not in st.session_state:
 
 if "history" not in st.session_state:
     st.session_state.history = []
-
-if "last_difficulty" not in st.session_state:
-    st.session_state.last_difficulty = difficulty #added
-
-
 
 st.subheader("Make a guess")
 
@@ -158,37 +132,10 @@ with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
 if new_game:
-    """
-    It seems to work but the code is not resetting the history list.
-    st.session_state.history.clear(); It works but when there's no attempt left, it doesnt let me to proceed with the game regardless of the erased list
-    and attempts (Linee 156)
-
-    I could reset the status to playing once it resets, BUT VS AI IS TELLING ME THAT THIS IS A BAND-AID SOLUTION (Telling me that I should refactor)
-    (Line 157)
-
-    For the range when the game resets, my version of the default difficulty is normal (Line 155)
-    """
     st.session_state.attempts = 0
-    difficulty = st.session_state.last_difficulty #added now with correlation with line 178, now it resets to last difficulty
-    st.session_state.history.clear() #Added this line to clear the history list when starting a new game, this wasn't here before
-    low, high = get_range_for_difficulty(difficulty) #Added this because secret needs to reset
-    st.session_state.secret = random.randint(low, high)
-    st.session_state.status = "playing" #Added this line to reset the game status to "playing" when starting a new game, this wasn't here before
+    st.session_state.secret = random.randint(1, 100)
     st.success("New game started.")
-    st.rerun() 
-
-if st.session_state.last_difficulty != difficulty: #added this block to reset the game when the difficulty changes, this wasn't here before (ai)
-    st.session_state.last_difficulty = difficulty
-    st.session_state.attempts = 0
-    low, high = get_range_for_difficulty(difficulty)
-    st.session_state.history.clear()
-    st.session_state.secret = random.randint(low, high) # We need to reset it according to the difficulty
-    st.session_state.status = "playing"
-    st.success(f"Difficulty changed to {difficulty}. Game reset.")
     st.rerun()
-
-    
-
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":

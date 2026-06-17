@@ -1,7 +1,6 @@
 import random
 import streamlit as st
 
-
 def get_range_for_difficulty(difficulty: str):
     """"
     I belive the function is good, but feels incomplete.
@@ -10,23 +9,17 @@ def get_range_for_difficulty(difficulty: str):
     st.session_state.secret = random.randint(low, high)
     st.session_state.history.clear()
 
-    Added some lines before the return statement, it respects the range however it keeps changing per try within the game
+    Added some lines before the return statement, it respects the range however it keeps changing per try within the game (FIX NOW)
     """
     
-    
     if difficulty == "Easy": 
-        
-
-        
+        #st.session_state.secret = random.randint(1, 20) # We need to reset it according to the difficulty
         return 1, 20
-        
-    
     if difficulty == "Normal":
-        
+        #st.session_state.secret = random.randint(1, 100) # We need to reset it according to the difficulty
         return 1, 100
-    
     if difficulty == "Hard":
-        
+        #st.session_state.secret = random.randint(1, 50) # We need to reset it according to the difficulty
         return 1, 50
     return 1, 100 # Commenting it to see what happens
 
@@ -106,7 +99,6 @@ attempt_limit = attempt_limit_map[difficulty]
 
 low, high = get_range_for_difficulty(difficulty)
 
-
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
@@ -124,11 +116,6 @@ if "status" not in st.session_state:
 
 if "history" not in st.session_state:
     st.session_state.history = []
-
-if "last_difficulty" not in st.session_state:
-    st.session_state.last_difficulty = difficulty #added
-
-
 
 st.subheader("Make a guess")
 
@@ -169,26 +156,11 @@ if new_game:
     For the range when the game resets, my version of the default difficulty is normal (Line 155)
     """
     st.session_state.attempts = 0
-    difficulty = st.session_state.last_difficulty #added now with correlation with line 178, now it resets to last difficulty
+    get_range_for_difficulty("Normal") #added
     st.session_state.history.clear() #Added this line to clear the history list when starting a new game, this wasn't here before
-    low, high = get_range_for_difficulty(difficulty) #Added this because secret needs to reset
-    st.session_state.secret = random.randint(low, high)
     st.session_state.status = "playing" #Added this line to reset the game status to "playing" when starting a new game, this wasn't here before
     st.success("New game started.")
-    st.rerun() 
-
-if st.session_state.last_difficulty != difficulty: #added this block to reset the game when the difficulty changes, this wasn't here before (ai)
-    st.session_state.last_difficulty = difficulty
-    st.session_state.attempts = 0
-    low, high = get_range_for_difficulty(difficulty)
-    st.session_state.history.clear()
-    st.session_state.secret = random.randint(low, high) # We need to reset it according to the difficulty
-    st.session_state.status = "playing"
-    st.success(f"Difficulty changed to {difficulty}. Game reset.")
     st.rerun()
-
-    
-
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":

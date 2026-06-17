@@ -169,10 +169,8 @@ if new_game:
     For the range when the game resets, my version of the default difficulty is normal (Line 155)
     """
     st.session_state.attempts = 0
-    difficulty = st.session_state.last_difficulty #added now with correlation with line 178, now it resets to last difficulty
+    difficulty = "Normal" #added now with correlation with line 178
     st.session_state.history.clear() #Added this line to clear the history list when starting a new game, this wasn't here before
-    low, high = get_range_for_difficulty(difficulty) #Added this because secret needs to reset
-    st.session_state.secret = random.randint(low, high)
     st.session_state.status = "playing" #Added this line to reset the game status to "playing" when starting a new game, this wasn't here before
     st.success("New game started.")
     st.rerun() 
