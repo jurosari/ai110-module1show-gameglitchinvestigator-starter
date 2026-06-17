@@ -54,18 +54,17 @@ def check_guess(guess, secret):
         return "Win", "🎉 Correct!"
 
     try:
-        if guess < secret: #I did this, to see if it works
+        if guess < secret: #I did this
             return "Too High", "📈 Go HIGHER!"
         else:
             return "Too Low", "📉 Go LOWER!"
     except TypeError:
-        g = str(guess) #Changed the typing error to compare because I don't understand the purpose of comparing it. I don't see myself typing "" as a guess,
-                  #But if i do, and it has a number in between, it will convert to int and successfully compare it
-        if g == secret: 
+        g = str(guess)
+        if g == secret:
             return "Win", "🎉 Correct!"
         if g > secret:
             return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER"
+        return "Too Low", "📉 Go LOWER!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
@@ -208,13 +207,12 @@ if submit:
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
-        """
-        if st.session_state.attempts % 2 == 0: #What is the purpose of this? I don't see the point of changing the type of the secret every 2 attempts, it just adds more confusion to the game and doesn't add any value to it, it just makes it more frustrating
+
+        if st.session_state.attempts % 2 == 0:
             secret = str(st.session_state.secret)
         else:
             secret = st.session_state.secret
-        """
-        secret = st.session_state.secret
+
         outcome, message = check_guess(guess_int, secret)
 
         if show_hint:

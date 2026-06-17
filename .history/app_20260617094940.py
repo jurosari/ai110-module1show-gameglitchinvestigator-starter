@@ -214,7 +214,6 @@ if submit:
         else:
             secret = st.session_state.secret
         """
-        secret = st.session_state.secret
         outcome, message = check_guess(guess_int, secret)
 
         if show_hint:
