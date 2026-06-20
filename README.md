@@ -25,19 +25,30 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [x] **Describe the game's purpose.**
+  A simple number-guessing game built with Streamlit. The app picks a secret number within a range that depends on the chosen difficulty (Easy 1–20, Normal 1–100, Hard 1–50), and the player tries to guess it within a limited number of attempts. After each guess the game gives a "Go HIGHER" / "Go LOWER" hint, tracks a score, and ends on a correct guess or when attempts run out.
+
+- [x] **Detail which bugs you found.**
+  - **State bug:** the secret number was regenerated on every "Submit," so the game was unwinnable.
+  - **Backwards/inconsistent hints:** the Higher/Lower feedback didn't match the secret, and the secret's type was being switched every other attempt, which made hints flip-flop.
+  - **New Game didn't fully reset:** it refreshed the secret but left the old history list (and could leave the game stuck in a non-playing state).
+  - **Difficulty restrictions ignored:** switching difficulty didn't reset the range/attempt limit, so the secret and guesses could fall outside the new difficulty's rules.
+  - **Score behaved oddly** due to the type-switching logic and inconsistent attempt handling.
+
+- [x] **Explain what fixes you applied.**
+  - Persisted the secret in `st.session_state` so it stays fixed across reruns and only changes on a new game or difficulty change.
+  - Corrected `check_guess` so the hints honestly reflect whether the guess is above or below the secret, and removed the every-2-attempts type-switching that corrupted comparisons and scoring.
+  - Added a single `reset_game(difficulty)` helper that clears attempts and history, picks a fresh secret in the correct range, and sets the status back to "playing" — used by both the **New Game** button and the difficulty-change reset so they can't drift apart.
+  - Made a difficulty change auto-reset the game to that difficulty's range and attempt limit.
+  - Refactored the core logic (`get_range_for_difficulty`, `parse_guess`, `check_guess`, `update_score`) into `logic_utils.py` and verified the behavior with `pytest`.
 
 ## 📸 Demo Walkthrough
-
-Describe your fixed game in numbered steps so a reader can follow along without watching a video:
-
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+*(Sample game on Normal difficulty, range 1–100, secret = 42.)*
+1. User enters a guess of 70 → hint reads "📉 Go LOWER!"
+2. User enters a guess of 25 → hint reads "📈 Go HIGHER!"
+3. The secret stays fixed across guesses, so each hint narrows the range honestly
+4. Score updates after each guess and history records every attempt
+5. User guesses 42 → "🎉 Correct!", balloons, and the game locks until a new game is started
 
 **Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
 
